@@ -49,7 +49,7 @@ class Post(models.Model):
                                                  self.slug])
 
 
-class Comment(models.Models):
+class Comment(models.Model):
     """Model representing a comment"""
     post = models.ForeignKey(Post,
                              on_delete=models.CASCADE,
