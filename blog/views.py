@@ -35,9 +35,17 @@ def post_detail(request, year, month, day, post):
                             publish__year=year,
                             publish__month=month,
                             publish__day=day)
+   # Lis of active comments for this post
+   comments = post.comments.filter(active=True)
+   
+   # Form for users to comment
+   form = CommentForm()
+   
    return render(request, 
                  'blog/post/detail.html', 
-                 { 'post': post })
+                 { 'post': post,
+                   'comments': comments ,
+                   'form': form })
    
    
 def post_share(request, post_id):
@@ -67,7 +75,7 @@ def post_share(request, post_id):
 @require_POST
 def post_comment(request, post_id):
     # Post a comment
-    post = get_object_or_404(Post, id=post, status=Post.Status.PUBLISHED)
+    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
     comment = None
     
     # A comment was posted
