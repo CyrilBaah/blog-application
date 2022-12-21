@@ -1,5 +1,5 @@
 # Blog Application
-This a blog application made Python(Django), HTML, and CSS.
+This is a blog application made Python(Django), HTML, and CSS.
 
 #  How to set up locally
 
