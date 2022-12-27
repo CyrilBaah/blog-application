@@ -5,6 +5,7 @@ from django.views.generic import ListView
 from .forms import EmailPostForm, CommentForm
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
+from taggit.models import Tag
 
 class PostListView(ListView):
     """List all posts"""
@@ -13,19 +14,25 @@ class PostListView(ListView):
     paginate_by = 3
     template_name = 'blog/post/list.html'
 
-# def post_list(request):
-#     """List all posts"""
-#     post_list = Post.published.all()
+def post_list(request, tag_slug=None):
+    """List all posts"""
+    post_list = Post.published.all()
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        post_list = post_list.filter(tags=tag)
     
-#     # Pagination with 3 posts per page
-#     paginator = Paginator(post_list, 3)
-#     page_number = request.GET.get('page', 1)
-#     try:
-#         posts = paginator.page(page_number)
-#     except EmptyPage:
-#         # if page_number is out of range deliver last page of results
-#         posts = paginator.page(paginator.num_pages)
-#     return render(request, 'blog/post/list.html', { 'posts': posts })
+    # Pagination with 3 posts per page
+    paginator = Paginator(post_list, 3)
+    page_number = request.GET.get('page', 1)
+    try:
+        posts = paginator.page(page_number)
+    except EmptyPage:
+        # if page_number is out of range deliver last page of results
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'blog/post/list.html', 
+                        { 'posts': posts,
+                         'tag': tag })
 
 def post_detail(request, year, month, day, post):
    """Display post detail"""
