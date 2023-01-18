@@ -20,3 +20,13 @@ $ pip install -r requirements.txt
 ```sh
 $ python manage.py runserver
 ```
+
+# Export SqliteDB to JSON
+```sh
+$ python manage.py dumpdata --indent=2 --output=blogapp.json
+```
+
+# Load the data into the new database (PostgreDB)
+```sh
+$ python manage.py loaddata blogapp.json
+```
