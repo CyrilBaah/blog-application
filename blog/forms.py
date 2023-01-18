@@ -12,6 +12,13 @@ class EmailPostForm(forms.Form):
     
 
 class CommentForm(forms.ModelForm):
+    # Form representing a comment
     class Meta:
         model = Comment
         fields = ['name', 'email', 'body']
+        
+        
+class SearchForm(forms.Form):
+    # Form representing a search
+    query = forms.CharField()
+    
